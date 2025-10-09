@@ -44,7 +44,7 @@ function Login(){
         console.log("API response is ",apiResponse);
 
         // if user gets loggedIn then navigate to home page
-        if(apiResponse.payload.data.success){
+        if(apiResponse.payload?.data?.success){
             navigate('/');
         }
     }

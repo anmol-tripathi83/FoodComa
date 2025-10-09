@@ -18,8 +18,20 @@ const app = express();
 
 // configuring the cors(cross orgin resource sharing)
 app.use(cors({
-    origin: serverConfig.FRONTEND_URL,  // allow to server to accept request from different origin
-    credentials: true,  // allow session cookie from browser to pass through
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            serverConfig.FRONTEND_URL,
+            'http://localhost:5173',
+            'http://127.0.0.1:5173',
+            'http://localhost:3000',
+            'http://127.0.0.1:3000',
+        ].filter(Boolean);
+        // allow requests with no origin like mobile apps or curl
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
 }));    // request(as user thorughtout the world(not having same IP)) which is not having same IP as that of server which gives cross origin request blocked therefore for that we have to enable cors in backened
 
 app.use(cookieParser());    // this middleware helps to start reading cookies

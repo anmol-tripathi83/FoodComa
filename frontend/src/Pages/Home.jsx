@@ -2,7 +2,7 @@
 import CircleArrowRight from "../Components/Icons/CircleArrowRight";
 import PizzaImage from "../assets/Images/pizza2.png";
 import CookingImage from "../assets/Images/cooking1.png";
-import CheckBadgeStroke12 from "../Components/Icons/checkBadgeStroke12.jsx";
+import CheckBadgeStroke12 from "../Components/Icons/checkBadgeStroke12";
 import OrderFood from "../assets/Images/orderFood.png";
 import Pickup from "../assets/Images/pickup.png";
 import Enjoy from "../assets/Images/enjoy.png";
@@ -162,7 +162,7 @@ function Home(){
             {/** Products list => concept of pagination -> eventhough you can implement that only letsay 20 products will show and there is load more btn which will load more 20 product this can be done using mangoose filters properties such as limit() property which can apply in the backened while finding all products and there is skip() property i.e skip(20) means after skipping 20 products all get fetched*/}
             <div className="mx-auto">
                 <div className="flex flex-wrap justify-center">
-                    {productsData.map((item, key) =>{
+                    {productsData && productsData.length > 0 ? productsData.map((item, key) =>{
                         return (
                             item.inStock && (
                                 <div className="p-4 md:w-1/3" key={item._id}>       {/** Key property to avoid re redering in list */}
@@ -192,7 +192,11 @@ function Home(){
                                 </div>
                             )
                         );
-                    })}
+                    }) : (
+                        <div className="w-full text-center py-8">
+                            <p className="text-gray-500">No products available at the moment.</p>
+                        </div>
+                    )}
                 </div>
             </div>
             

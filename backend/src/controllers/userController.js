@@ -17,6 +17,8 @@ async function createUser(req, res){
             error : {}
         });
     } catch(error){                   // if not created the user due to some error(server error, client error etc)
+        console.log("Error in createUser controller:", error);
+        
         if(error instanceof AppError){    // error from handled error
             return res.status(error.statusCode).json({
                 success: false,
@@ -25,11 +27,14 @@ async function createUser(req, res){
                 error: error
             });
         }
-        return res.status(error.statusCode).json({
-            message : error.reason,
-            success : false,
-            data : {},
-            error : error
+        
+        // Handle other errors
+        const statusCode = error.statusCode || 500;
+        return res.status(statusCode).json({
+            message: error.message || 'Internal Server Error',
+            success: false,
+            data: {},
+            error: error
         });
     }
 }

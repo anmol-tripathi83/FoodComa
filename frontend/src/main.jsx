@@ -12,6 +12,6 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <App />
       <Toaster/>     {/** used for notification pop up */}
-    </BrowserRouter>,
+    </BrowserRouter>
   </Provider>
 );

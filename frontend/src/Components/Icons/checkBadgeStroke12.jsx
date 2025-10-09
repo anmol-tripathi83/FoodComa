@@ -1,4 +1,3 @@
-
 function CheckBadgeStroke12(props) {
   return (
     <svg
@@ -17,3 +16,5 @@ function CheckBadgeStroke12(props) {
 }
 
 export default CheckBadgeStroke12;
+
+

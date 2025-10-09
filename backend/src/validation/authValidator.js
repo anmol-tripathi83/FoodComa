@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET, FRONTEND_URL } = require("../config/serverConfig");
+const { JWT_SECRET, FRONTEND_URL, COOKIE_SECURE } = require("../config/serverConfig");
 const UnAuthorisedError = require("../utils/unauthorisedError");
 
 // Middleware which is used to protect the route to check whether the user is loggedIn or not i.e have sended the token or not
@@ -37,12 +37,23 @@ async function isLoggedIn(req, res, next){
    } catch(error){    // If token is tempered(not having payload) i.e invalid token 
          // or expired token
         if(error.name == "TokenExpiredError"){
+            // Extract domain from FRONTEND_URL for cookie domain
+            let cookieDomain = undefined; // undefined means current domain
+            if (FRONTEND_URL) {
+                try {
+                    const url = new URL(FRONTEND_URL);
+                    cookieDomain = url.hostname;
+                } catch (error) {
+                    console.log("Invalid FRONTEND_URL, using default domain:", error.message);
+                }
+            }
+            
             res.cookie("authToken", "", {
                 httpOnly: true,
                 sameSite: "lax",    // this is used to set the cookie to be sent in cross origin request
-                secure: COOKIE_SECURE,    // before deploying it to production set it to true becuase in production we will be using https and not http therefore we have to set it to true
-                maxAge: 7 * 24 * 60 * 60 * 1000,           // 7 days converted into msec
-                domain: FRONTEND_URL      // this is used to set the cookie to be sent in cross origin request
+                secure: COOKIE_SECURE === 'true',    // before deploying it to production set it to true becuase in production we will be using https and not http therefore we have to set it to true
+                maxAge: 0,           // Set to 0 to expire the cookie immediately
+                domain: cookieDomain      // this is used to set the cookie to be sent in cross origin request
             });
             return res.status(200).json({
                success: true,

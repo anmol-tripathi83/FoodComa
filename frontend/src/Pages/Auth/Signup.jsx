@@ -61,7 +61,7 @@ function Signup() {
         console.log("API response is ",apiResponse);
 
         // when user succesfully signuped then navigate to login page
-        if(apiResponse.payload.data.success){
+        if(apiResponse.payload?.data?.success){
             navigate('/auth/login');
         }
 
