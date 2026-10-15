@@ -1,17 +1,14 @@
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { BrowserRouter } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast';
-import { Provider } from 'react-redux';
-import { store } from './Redux/store.js';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import StoreContextProvider from "./context/StoreContext.jsx";
 
-createRoot(document.getElementById('root')).render(
-  // This provider will take a object and we add store to it and now redux store setup done
-  <Provider store={store}>
-    <BrowserRouter>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <StoreContextProvider>
       <App />
-      <Toaster/>     {/** used for notification pop up */}
-    </BrowserRouter>
-  </Provider>
+    </StoreContextProvider>
+  </BrowserRouter>
 );
